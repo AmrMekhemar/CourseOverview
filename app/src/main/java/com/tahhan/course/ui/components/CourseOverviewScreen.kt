@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,15 +25,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.window.core.layout.WindowSizeClass
 import com.tahhan.course.R
 import com.tahhan.course.ui.Course
 import com.tahhan.course.ui.course
 import com.tahhan.course.ui.theme.CourseTheme
 import com.tahhan.course.ui.theme.PrimaryText
+import com.tahhan.course.ui.theme.SecondaryText
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -61,7 +66,9 @@ fun CourseOverviewScreen(
             Spacer(Modifier.height(8.dp))
             Text(
                 text = course.description,
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
+                color = SecondaryText,
+                textAlign = if (isNotCompact) TextAlign.Center else TextAlign.Start
             )
             Spacer(Modifier.height(16.dp))
             FlowRow(
@@ -79,7 +86,8 @@ fun CourseOverviewScreen(
             Spacer(Modifier.height(24.dp))
             LazyColumn(
                 horizontalAlignment = Alignment.Start,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 stickyHeader {
                     Text(
@@ -87,23 +95,22 @@ fun CourseOverviewScreen(
                         style = MaterialTheme.typography.headlineMedium,
                         modifier = Modifier.align(Alignment.Start)
                     )
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(2.dp))
                 }
                 items(course.whatToLearn) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.arrow),
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.alignBy { it.measuredHeight  })
                         Text(
                             text = it,
-                            style = MaterialTheme.typography.labelLarge
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.alignBy(FirstBaseline)
                         )
-
                     }
                 }
             }
